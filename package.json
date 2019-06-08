@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "play",
   "main": "index.html",
+  "engines": {
+    "node": ">=10.16.0",
+    "npm": ">=6.9.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "dev": "webpack-dev-server --output-public-path=/build/",
-    "json:server": "json-server --watch api/db.json"
+    "start": "node ./build/index"
   },
   "author": "Chris Spencer",
   "license": "MIT",
@@ -21,6 +24,7 @@
     "webpack-dev-server": "^2.9.4"
   },
   "dependencies": {
+    "express": "^4.17.1",
     "json-server": "^0.12.1"
   }
 }
