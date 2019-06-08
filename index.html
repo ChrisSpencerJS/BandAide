@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+    .wrapper {
+      display: grid;
+      grid-template-columns:repeat(3, auto);
+    }
+
+    .wrapper > p {
+      grid-column: 1 / 4
+    }
+  </style>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/darkly/bootstrap.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <title>BandAid</title>
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-primary mb-3">
+    <div class="container">
+      <a href="#" class="navbar-brand mx-auto">BandAid</a>
+    </div>
+  </nav>
+  <div class="container postsContainer">
+    <div class="card card-body card-form">
+      <h2>Search for your favourite band</h2>
+      <div class="form-group">
+        <input type="text" id="entry" class="form-control" placeholder="Enter band name...">
+      </div>
+      <button class="post-submit btn btn-primary btn-block">Find</button>
+      <span class="form-end"></span>
+    </div>
+    <br>
+    
+    <br>
+
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <a class="nav-link show active" data-toggle="tab" id=bio-tab href="#biography">Biography</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" id=disco-tab href="#discography">Discography</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" id=live-tab href="#live">Live</a>
+      </li>
+    </ul>
+
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade show active" id="biography">
+        <div class="wrapper">
+
+        </div>
+      </div>
+      <div class="tab-pane fade show" id="discography"></div>
+      <div class="tab-pane fade show" id="live"></div>  
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <div>
+        <ul class="pagination">
+          <li class="page-item disabled">
+            <a class="page-link" href="#">&laquo;</a>
+          </li>
+          <li class="page-item active">
+            <a class="page-link" href="#">1</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">2</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">3</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">4</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">5</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="#">&raquo;</a>
+          </li>
+        </ul>
+      </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/hmac-sha256.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/enc-base64.min.js"></script>
+  <script src="build/app.bundle.js"></script>
+</body>
+</html>
