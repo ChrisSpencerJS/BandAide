@@ -3963,10 +3963,11 @@ var UI = function () {
     key: 'displayDiscography',
     value: function displayDiscography(releases) {
       var output = '';
-      var albums = releases.releases.filter(function (release) {
+      //console.log(releases);
+      var albums = JSON.parse(releases).releases.filter(function (release) {
         return release.id < 99999;
       });
-      console.log(albums);
+      //console.log(albums);
       albums.forEach(function (release) {
         output += '\n        <div class="card card-body mb-2">\n          <div class="row">\n            <div class="col-md-2">\n              <img src="' + release.thumb + '" alt=' + release.thumb + '</img>\n            </div>\n            <div class="col-md-5">\n              <ul class="list-group">\n                <div class="list-group-item">Title: ' + release.title + '</div>\n                <div class="list-group-item">Year: ' + release.year + '</div>    \n                <div class="list-group-item">Artist: ' + release.artist + '</div>            \n              </ul> \n            </div>\n          </div>\n        </div>';
       });
@@ -3978,6 +3979,7 @@ var UI = function () {
       var _this = this;
 
       //console.log(profile);
+      profile = JSON.parse(profile);
       this.biographyContent.innerHTML = '<p mb-5>' + profile.profile + '</p>';
 
       if (profile.members) {
@@ -3998,6 +4000,7 @@ var UI = function () {
   }, {
     key: 'displayLive',
     value: function displayLive(gigs) {
+      gigs = JSON.parse(gigs);
       var output = '';
       output += '\n    <table class="table table-striped">\n    <thead>\n      <tr>\n        <th>Name</th>\n        <th>Venue</th>\n        <th>City</th>\n        <th>Date</th>\n      </tr>\n    </thead>\n    <tbody>\n    ';
       gigs.resultsPage.results.event.forEach(function (event) {
@@ -9635,69 +9638,32 @@ var _ui = __webpack_require__(130);
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-// https://www.discogs.com/developers/#page:home,header:home-quickstart
-var token = 'uQRmUQiWteJcILGblowszgHfHjKPfpDkodgGOiJM';
-
-// https://www.songkick.com/developer/getting-started
-var apiKey = 'BgmcaYJXGcB2MR9h';
-
-// http://developers.music-story.com/developers
-var consumerKey = 'd2a004d191c953e95b17999ad7ed58c06b49463a';
-var consumerSecret = '18fb77b6a6a943a35bcc08f830fc4d7b69b78d63';
-var tokenSecret = '72b95c9ec025d5a8315193db44f06a2ab754d960';
-var oauthBaseString = 'GET&http%3A%2F%2Fapi.music-story.com%2Foauth%2Frequest_token&oauth_consumer_key%3D' + consumerKey;
-
 document.querySelector('.post-submit').addEventListener('click', getData);
 
 function callDiscogsAPI(searchTerm) {
-  _http.http.get('https://api.discogs.com/database/search?q=' + searchTerm + '&type=artist&token=' + token).then(function (searchResultsData) {
-    //console.log(searchResultsData);
-    var artistData = searchResultsData.results.filter(function (result) {
-      return result.type === 'artist' && result.title === searchTerm;
+  var server = location.protocol + '//' + location.host;
+  _http.http.getText(server + '/api/artist/' + searchTerm).then(function (id) {
+    console.log(id);
+    _http.http.get(server + '/api/releases/' + id).then(function (data) {
+      return _ui.ui.displayDiscography(data);
+    }).catch(function (err) {
+      return console.log(err);
     });
-    //console.log(artistData)
-    var resourceUrl = artistData[0].resource_url;
-    if (resourceUrl) {
-      _http.http.get(resourceUrl + '/releases?token=' + token).then(function (releases) {
-        return _ui.ui.displayDiscography(releases);
-      }).catch(function (err) {
-        return console.log(err);
-      });
-    } else {
-      console.log('No resource URL found');
-    }
 
-    if (resourceUrl) {
-      _http.http.get(resourceUrl + '?token=' + token).then(function (profile) {
-        return _ui.ui.displayBiography(profile);
-      }).catch(function (err) {
-        return console.log(err);
-      });
-    } else {
-      console.log('No resource URL found');
-    }
+    _http.http.get(server + '/api/profile/' + id).then(function (data) {
+      return _ui.ui.displayBiography(data);
+    }).catch(function (err) {
+      return console.log(err);
+    });
   }).catch(function (err) {
-    return console.log(err);
+    return console.log("err");
   });
 }
 
 function callSongkickAPI(searchTerm) {
-  _http.http.get('https://api.songkick.com/api/3.0/search/artists.json?query=' + searchTerm + '&apikey=' + apiKey).then(function (data) {
-    var artists = data.resultsPage.results.artist.filter(function (result) {
-      return result.displayName == searchTerm;
-    });
-    var id = artists[0].id;
-    console.log(id);
-
-    if (id) {
-      _http.http.get('https://api.songkick.com/api/3.0/artists/' + id + '/gigography.json?apikey=' + apiKey).then(function (gigs) {
-        return _ui.ui.displayLive(gigs);
-      }).catch(function (err) {
-        return console.log(err);
-      });
-    } else {
-      console.log('Id is null for some reason');
-    }
+  var server = location.protocol + '//' + location.host;
+  _http.http.get(server + '/api/live/' + searchTerm).then(function (gigs) {
+    _ui.ui.displayLive(gigs);
   }).catch(function (err) {
     return console.log(err);
   });
@@ -9772,20 +9738,17 @@ var EasyHTTP = function () {
 
       return get;
     }()
-
-    // Make an HTTP GET Request 
-
   }, {
-    key: 'getNoCors',
+    key: 'getText',
     value: function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(url) {
-        var response, resData, xml;
+        var response, resData;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return fetch(url, { mode: 'no-cors' });
+                return fetch(url);
 
               case 2:
                 response = _context2.sent;
@@ -9794,16 +9757,11 @@ var EasyHTTP = function () {
 
               case 5:
                 resData = _context2.sent;
-                _context2.next = 8;
-                return new window.DOMParser().parseFromString(resData, "text/xml");
 
-              case 8:
-                xml = _context2.sent;
-
-                console.log(xml);
+                console.log(resData);
                 return _context2.abrupt('return', resData);
 
-              case 11:
+              case 8:
               case 'end':
                 return _context2.stop();
             }
@@ -9811,11 +9769,11 @@ var EasyHTTP = function () {
         }, _callee2, this);
       }));
 
-      function getNoCors(_x2) {
+      function getText(_x2) {
         return _ref2.apply(this, arguments);
       }
 
-      return getNoCors;
+      return getText;
     }()
 
     // Make an HTTP POST Request

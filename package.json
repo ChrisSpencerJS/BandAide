@@ -10,7 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack",
-    "start": "node ./build/index"
+    "start": "node index"
   },
   "author": "Chris Spencer",
   "license": "MIT",
