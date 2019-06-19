@@ -8,7 +8,7 @@
     "npm": "6.9.0"
   },
   "scripts": {
-    "build": "npm install && cp ./build/*.* -t ./dist && cp index.js -t ./dist",
+    "build": "npm install && cp package.json -t ./dist && cp ./build/*.* -t ./dist && cp index.js -t ./dist",
     "dev": "webpack",
     "start": "node index"
   },
