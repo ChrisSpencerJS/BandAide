@@ -4,10 +4,10 @@ var path = require('path');
 var request = require('request');
 
 // https://www.discogs.com/developers/#page:home,header:home-quickstart
-const token = 'uQRmUQiWteJcILGblowszgHfHjKPfpDkodgGOiJM';
+const token = 'redacted';
 
 // https://www.songkick.com/developer/getting-started
-const apiKey = 'BgmcaYJXGcB2MR9h';
+const apiKey = 'redacted';
 
 app.use(express.static('build'));
 
